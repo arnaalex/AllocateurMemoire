@@ -14,45 +14,51 @@
 void *zone_memoire = 0;
 
 /* ecrire votre code ici */
+void *TZL[BUDDY_MAX_INDEX + 1];
 
-int 
+    int 
 mem_init()
 {
-  if (! zone_memoire)
-    zone_memoire = (void *) malloc(ALLOC_MEM_SIZE);
-  if (zone_memoire == 0)
+    if (! zone_memoire)
+        zone_memoire = (void *) malloc(ALLOC_MEM_SIZE);
+    if (zone_memoire == 0)
     {
-      perror("mem_init:");
-      return -1;
+        perror("mem_init:");
+        return -1;
     }
 
-  /* ecrire votre code ici */
+    /* ecrire votre code ici */
+    //Initialisation de TZL 
+    for(int i=0; i<BUDDY_MAX_INDEX; ++i){
+        TZL[i]=NULL;
+    }
+    TZL[BUDDY_MAX_INDEX]=zone_memoire;
 
-  return 0;
+    *zone_memoire=NULL;
+    return 0;
 }
 
-void *
+    void *
 mem_alloc(unsigned long size)
 {
-  /*  ecrire votre code ici */
-  return 0;  
+    /*  ecrire votre code ici */
+    return 0;  
 }
 
-int 
+    int 
 mem_free(void *ptr, unsigned long size)
 {
-  /* ecrire votre code ici */
-  return 0;
+    /* ecrire votre code ici */
+    return 0;
 }
 
 
-int
+    int
 mem_destroy()
 {
-  /* ecrire votre code ici */
-
-  free(zone_memoire);
-  zone_memoire = 0;
-  return 0;
+    /* ecrire votre code ici */
+    free(zone_memoire);
+    zone_memoire = 0;
+    return 0;
 }
 

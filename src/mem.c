@@ -55,12 +55,14 @@ mem_alloc(unsigned long size)
     
     while(i>=0 && i<BUDDY_MAX_INDEX+1 && i!=bloc){
       void* un = TZL[i];
-      void* deux = TZL[i]+(1<<(i-1));
+      int k = 1<<(i-1); 
+      printf("%d\n",k);
+      void* deux = TZL[i]+k;
       TZL[i] = *((void**)TZL[i]);
       i=i-1;
-      *(void**)un = &deux;
+      *(void**)un = deux;
       *(void**)deux = TZL[i];
-      TZL[i] = &un; 
+      TZL[i] = un; 
     }
     
     if(i==bloc){
@@ -68,7 +70,7 @@ mem_alloc(unsigned long size)
       TZL[i] = *((void **)TZL[i]);
     }
 
-    return res;  
+    return (void**)res;  
 }
 
     int 

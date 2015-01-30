@@ -38,10 +38,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /user/1/.base/arnaalex/home/ensimag-allocateur
+CMAKE_SOURCE_DIR = /user/4/.base/brazousd/home/AllocateurMemoire
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /user/1/.base/arnaalex/home/ensimag-allocateur/build
+CMAKE_BINARY_DIR = /user/4/.base/brazousd/home/AllocateurMemoire/build
 
 # Utility rule file for check.
 
@@ -64,6 +64,6 @@ CMakeFiles/check.dir/clean:
 .PHONY : CMakeFiles/check.dir/clean
 
 CMakeFiles/check.dir/depend:
-	cd /user/1/.base/arnaalex/home/ensimag-allocateur/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /user/1/.base/arnaalex/home/ensimag-allocateur /user/1/.base/arnaalex/home/ensimag-allocateur /user/1/.base/arnaalex/home/ensimag-allocateur/build /user/1/.base/arnaalex/home/ensimag-allocateur/build /user/1/.base/arnaalex/home/ensimag-allocateur/build/CMakeFiles/check.dir/DependInfo.cmake --color=$(COLOR)
+	cd /user/4/.base/brazousd/home/AllocateurMemoire/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /user/4/.base/brazousd/home/AllocateurMemoire /user/4/.base/brazousd/home/AllocateurMemoire /user/4/.base/brazousd/home/AllocateurMemoire/build /user/4/.base/brazousd/home/AllocateurMemoire/build /user/4/.base/brazousd/home/AllocateurMemoire/build/CMakeFiles/check.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/check.dir/depend
 

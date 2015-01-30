@@ -35,7 +35,7 @@ mem_init()
     }
     TZL[BUDDY_MAX_INDEX]=zone_memoire;
 
-    *zone_memoire=NULL;
+    *(void**)zone_memoire=NULL;
     return 0;
 }
 
@@ -43,30 +43,32 @@ mem_init()
 mem_alloc(unsigned long size)
 {
     /*  ecrire votre code ici */
-  int bloc = ceil(log(size)/log(2));
-  void* res = null;
-  int i = bloc; 
+  if(size<=0)
+    return NULL;
 
-  // while((i<BUDDY_MAX_INDEX+1) && (res==null)){
-  
+  int bloc = ceil(log(size)/log(2));
+  void* res = NULL;
+  int i = bloc; 
      
-    while((i<BUDDY_MAX_INDEX+1) && TZL[i]==null)
+    while((i<BUDDY_MAX_INDEX+1) && TZL[i]==NULL)
       i++;
     
     while(i>=0 && i<BUDDY_MAX_INDEX+1 && i!=bloc){
       void* un = TZL[i];
-      void* deux = TZL[i]+1<<(i-1);
-      TZL[i] = *(TZL[i]);
+      void* deux = TZL[i]+(1<<(i-1));
+      TZL[i] = *((void**)TZL[i]);
       i=i-1;
-      *un = &deux;
-      *deux = TZL[i];
-      TZ[i] = &un;
-      
+      *(void**)un = &deux;
+      *(void**)deux = TZL[i];
+      TZL[i] = &un; 
+    }
+    
+    if(i==bloc){
+      res =  TZL[i];
+      TZL[i] = *((void **)TZL[i]);
     }
 
-  }
-
-    return 0;  
+    return res;  
 }
 
     int 

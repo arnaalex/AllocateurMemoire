@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 #include "mem.h"
 
 /** squelette du TP allocateur memoire */
@@ -14,7 +15,7 @@
 void *zone_memoire = 0;
 
 /* ecrire votre code ici */
-void *TZL[BUDDY_MAX_INDEX + 1];
+void *TZL[BUDDY_MAX_INDEX+1];
 
     int 
 mem_init()
@@ -42,6 +43,29 @@ mem_init()
 mem_alloc(unsigned long size)
 {
     /*  ecrire votre code ici */
+  int bloc = ceil(log(size)/log(2));
+  void* res = null;
+  int i = bloc; 
+
+  // while((i<BUDDY_MAX_INDEX+1) && (res==null)){
+  
+     
+    while((i<BUDDY_MAX_INDEX+1) && TZL[i]==null)
+      i++;
+    
+    while(i>=0 && i<BUDDY_MAX_INDEX+1 && i!=bloc){
+      void* un = TZL[i];
+      void* deux = TZL[i]+1<<(i-1);
+      TZL[i] = *(TZL[i]);
+      i=i-1;
+      *un = &deux;
+      *deux = TZL[i];
+      TZ[i] = &un;
+      
+    }
+
+  }
+
     return 0;  
 }
 

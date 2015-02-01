@@ -5,7 +5,9 @@
  *****************************************************/
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <assert.h>
 #include <math.h>
 #include "mem.h"
@@ -56,7 +58,7 @@ mem_alloc(unsigned long size)
     while(i>=0 && i<BUDDY_MAX_INDEX+1 && i!=bloc){
       void* un = TZL[i];
       int k = 1<<(i-1); 
-      printf("%d\n",k);
+      //printf("%d\n",k);
       void* deux = TZL[i]+k;
       TZL[i] = *((void**)TZL[i]);
       i=i-1;
@@ -77,6 +79,33 @@ mem_alloc(unsigned long size)
 mem_free(void *ptr, unsigned long size)
 {
     /* ecrire votre code ici */
+  int i = ceil(log(size)/log(2));
+  bool found = true;
+  void * mon_ad = ptr;
+  void* p;
+  void* adr_comp;
+  while(i< BUDDY_MAX_INDEX && found){
+    adr_comp =(void*)(((uintptr_t)mon_ad)^i);
+    p = TZL[i];
+    found = false;
+    while(p!=NULL && !found){
+      if(adr_comp == *(void**)p){
+	found = true;
+      }
+      else{
+	p = *(void**)p;
+      }
+    }
+    if(found){
+      i++;
+      *(void**)p = *(void**)adr_comp;
+      mon_ad = (mon_ad<adr_comp)?mon_ad:adr_comp;
+    }
+  }
+
+    *(void**)mon_ad = TZL[i];
+    TZL[i] = mon_ad;
+
     return 0;
 }
 

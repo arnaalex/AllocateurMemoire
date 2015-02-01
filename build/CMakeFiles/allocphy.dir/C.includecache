@@ -9,7 +9,11 @@
 /user/4/.base/brazousd/home/AllocateurMemoire/src/mem.c
 stdio.h
 -
+stdbool.h
+-
 stdlib.h
+-
+stdint.h
 -
 assert.h
 -

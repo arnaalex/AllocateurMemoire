@@ -44,18 +44,25 @@ mem_init()
     void *
 mem_alloc(unsigned long size)
 {
+  // printf("start\n");
     /*  ecrire votre code ici */
   if(size<=0)
     return NULL;
 
   int bloc = ceil(log(size)/log(2));
+  int alloc_min = ceil(log( sizeof(void*))/log(2)); 
+  if (bloc<alloc_min){
+    bloc=alloc_min;
+  }
+  //printf("bloc %d\n", bloc);
   void* res = NULL;
   int i = bloc; 
-     
+
+   
     while((i<BUDDY_MAX_INDEX+1) && TZL[i]==NULL)
       i++;
     
-    while(i>=0 && i<BUDDY_MAX_INDEX+1 && i!=bloc){
+    while(  i<BUDDY_MAX_INDEX+1 && i!=bloc){
       void* un = TZL[i];
       int k = 1<<(i-1); 
       //printf("%d\n",k);
@@ -66,20 +73,34 @@ mem_alloc(unsigned long size)
       *(void**)deux = TZL[i];
       TZL[i] = un; 
     }
-    
-    if(i==bloc){
+        if(i==bloc){
       res =  TZL[i];
       TZL[i] = *((void **)TZL[i]);
-    }
 
-    return (void**)res;  
+    }
+	for(int j=0; j<BUDDY_MAX_INDEX+1; j++)
+	  printf("%p ", TZL[j]);
+	printf("\n");
+    
+	//  if (res!=NULL) printf("\neeee %lu %d %p %p\n", size, i,res, zone_memoire);
+	//else printf("null %lu\n", size);
+	//fflush(stdout);
+    return res;  
 }
 
     int 
 mem_free(void *ptr, unsigned long size)
 {
     /* ecrire votre code ici */
+  
+if(ptr<zone_memoire || ptr>(zone_memoire+ALLOC_MEM_SIZE))
+    return 1;
+//printf("olol %p %p %p %p\n",ptr, zone_memoire, ptr+size,zone_memoire+ALLOC_MEM_SIZE);
   int i = ceil(log(size)/log(2));
+  int alloc_min = ceil(log( sizeof(void*))/log(2)); 
+  if (i<alloc_min){
+    i=alloc_min;
+  }
   bool found = true;
   void * mon_ad = ptr;
   void* p;

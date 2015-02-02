@@ -64,9 +64,9 @@ mem_alloc(unsigned long size)
     
     while(  i<BUDDY_MAX_INDEX+1 && i!=bloc){
       void* un = TZL[i];
-      int k = 1<<(i-1); 
+      //int k = 1<<(i-1); 
       //printf("%d\n",k);
-      void* deux = TZL[i]+k;
+      void* deux = (void*)((uintptr_t)TZL[i]+(1<<(i-1)));
       TZL[i] = *((void**)TZL[i]);
       i=i-1;
       *(void**)un = deux;
@@ -78,9 +78,9 @@ mem_alloc(unsigned long size)
       TZL[i] = *((void **)TZL[i]);
 
     }
-	for(int j=0; j<BUDDY_MAX_INDEX+1; j++)
-	  printf("%p ", TZL[j]);
-	printf("\n");
+	//	for(int j=0; j<BUDDY_MAX_INDEX+1; j++)
+	//printf("%p ", TZL[j]);
+	//printf("\n");
     
 	//  if (res!=NULL) printf("\neeee %lu %d %p %p\n", size, i,res, zone_memoire);
 	//else printf("null %lu\n", size);
@@ -106,9 +106,14 @@ if(ptr<zone_memoire || ptr>(zone_memoire+ALLOC_MEM_SIZE))
   void* p;
   void* adr_comp;
   while(i< BUDDY_MAX_INDEX && found){
-    adr_comp =(void*)(((uintptr_t)mon_ad)^i);
+    // adr_comp =(void*)(((uintptr_t)mon_ad^(1<<(i))));
+ adr_comp =(void*)(((uintptr_t)mon_ad^(1<<(i))));
+    // if((uintptr_t)mon_ad&(1<<i)) 
+    // if(i==4 || i==12 || i>=15 )
+    //adr_comp =(void*)(((uintptr_t)mon_ad^(1<<i)^(1<<(i+1))));
     p = TZL[i];
-    found = false;
+    found = adr_comp == p ;
+    bool first = found;
     while(p!=NULL && !found){
       if(adr_comp == *(void**)p){
 	found = true;
@@ -119,14 +124,19 @@ if(ptr<zone_memoire || ptr>(zone_memoire+ALLOC_MEM_SIZE))
     }
     if(found){
       i++;
+      if(!first)
       *(void**)p = *(void**)adr_comp;
+      else
+	TZL[i-1]=*(void**)p;
       mon_ad = (mon_ad<adr_comp)?mon_ad:adr_comp;
     }
   }
 
     *(void**)mon_ad = TZL[i];
     TZL[i] = mon_ad;
-
+for(int j=0; j<BUDDY_MAX_INDEX+1; j++)
+	  printf("%p ", TZL[j]);
+	printf("\n");
     return 0;
 }
 
